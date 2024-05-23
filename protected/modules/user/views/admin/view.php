@@ -67,7 +67,10 @@ array_push($attributes,
 		'name' => 'status',
 		'value' => User::itemAlias("UserStatus", $model->status),
 	),
-	'wilayah' // Add wilayah attribute
+	array(
+		'name' => 'wilayah_id',
+		'value' => $model->wilayah ? $model->wilayah->nama : 'N/A',
+	),
 );
 
 $this->widget('zii.widgets.CDetailView', array(
