@@ -204,7 +204,7 @@ class PendaftaranController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Pendaftaran::model()->with(array('obatPasiens.obat','tindakanPasiens.tindakan'))->findByPk($id);		
+		$model=Pendaftaran::model()->with(array('obatPasiens.obat', 'tindakanPasiens.tindakan', 'pembayarans', 'pasien', 'user', 'tagihans'))->findByPk($id);		
 		
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
