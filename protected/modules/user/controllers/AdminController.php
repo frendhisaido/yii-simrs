@@ -87,7 +87,7 @@ class AdminController extends Controller
 			if($model->validate() && $profile->validate()) {
 				$model->password=Yii::app()->controller->module->encrypting($model->password);
 				if($model->save()) {
-					$model->wilayah = $_POST['User']['wilayah'];
+					$model->wilayah_id = $_POST['User']['wilayah'];
 					$profile->user_id=$model->id;
 					$profile->save();
 				}

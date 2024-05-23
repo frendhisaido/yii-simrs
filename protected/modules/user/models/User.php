@@ -81,7 +81,7 @@ class User extends CActiveRecord
         if (!isset($relations['profile']))
             $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
 		
-		$relations['wilayah'] = array(self::HAS_ONE, 'Wilayah', 'wilayah_id', 'condition' => 'wilayah.id = users.wilayah_id');
+		$relations['wilayah'] = array(self::BELONGS_TO, 'Wilayah', 'wilayah_id');
         return $relations;
 	}
 
