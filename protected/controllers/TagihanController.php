@@ -1,7 +1,11 @@
 <?php
+Yii::import('Pendaftaran.models.Tagihan');
 Yii::import('Pendaftaran.models.Pendaftaran');
+Yii::import('Obat.models.Obat');
+Yii::import('Tindakan.models.Tindakan');
 Yii::import('Pasien.models.Pasien');
-class PendaftaranController extends Controller
+
+class TagihanController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -50,21 +54,12 @@ class PendaftaranController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-
-	 public function actionView($id)
-	 {
-		 $model = Pendaftaran::model()->with(  array(
-			'obat','tindakan'
-		))->findByPk($id);
-		 
-		 if ($model === null) {
-			 throw new CHttpException(404, 'The requested page does not exist.');
-		 }
- 
-		 $this->render('view', array(
-			 'model' => $model,
-		 ));
-	 }
+	public function actionView($id)
+	{
+		$this->render('view',array(
+			'model'=>$this->loadModel($id),
+		));
+	}
 
 	/**
 	 * Creates a new model.
@@ -72,40 +67,43 @@ class PendaftaranController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Pendaftaran;
+		$model=new Tagihan;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pendaftaran']))
+		// $_POST['Tagihan'] only contains `pendaftaran_id`
+		// Load pendaftaran model based on `pendaftaran_id`
+		// Load each `obat` and `tindakan` from pendaftaran model
+		// Calculate total harga from `obat` and `tindakan`
+		// Save total harga to `total_tagihan` in `tagihan` table
+		// Save `pendaftaran_id` to `pendaftaran_id` in `tagihan` table
+		// Redirect to view page with `id` from newly created `tagihan`
+		if(isset($_POST['Tagihan']))
 		{
-			$model->attributes=$_POST['Pendaftaran'];
-			if($model->save()) {
-				// Save ObatPasiens
-				ObatPasien::model()->deleteAllByAttributes(array('pendaftaran_id' => $model->id));
-				if (isset($_POST['Pendaftaran']['obatPasiens'])) {
-					foreach ($_POST['Pendaftaran']['obatPasiens'] as $obatId) {
-						$obatPasien = new ObatPasien();
-						$obatPasien->pendaftaran_id = $model->id;
-						$obatPasien->obat_id = $obatId;
-						$obatPasien->save();
-					}
-				}
-
-				// Save TindakanPasiens
-				TindakanPasien::model()->deleteAllByAttributes(array('pendaftaran_id' => $model->id));
-				if (isset($_POST['Pendaftaran']['tindakanPasiens'])) {
-					foreach ($_POST['Pendaftaran']['tindakanPasiens'] as $tindakanId) {
-						$tindakanPasien = new TindakanPasien();
-						$tindakanPasien->pendaftaran_id = $model->id;
-						$tindakanPasien->tindakan_id = $tindakanId;
-						$tindakanPasien->save();
-					}
-				}
-
-				$this->redirect(array('view', 'id' => $model->id));
+			$model->attributes=$_POST['Tagihan'];
+			$pendaftaran = Pendaftaran::model()->with(  array(
+				'obat','tindakan'
+			))->findByPk($model->pendaftaran_id);
+			$totalHarga = 0;
+			$rincianTagihan = '';
+			foreach ($pendaftaran->obat as $obat) {
+				$totalHarga += $obat->harga;
+				$rincianTagihan .= $obat->nama . ' | ' . $obat->harga . '<br>';
 			}
+			foreach ($pendaftaran->tindakan as $tindakan) {
+				$totalHarga += $tindakan->harga;
+				$rincianTagihan .= $tindakan->nama . ' | ' . $tindakan->harga . '<br>';
+			}
+			$model->total_tagihan = $totalHarga;
+			$model->pasien_id = $pendaftaran->pasien_id;
+			$model->created_by = Yii::app()->user->id;
+			$model->pendaftaran_id = $pendaftaran->id;
+			$model->rincian_tagihan = $rincianTagihan;
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
+
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -124,34 +122,11 @@ class PendaftaranController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pendaftaran']))
+		if(isset($_POST['Tagihan']))
 		{
-			$model->attributes=$_POST['Pendaftaran'];
-			if($model->save()) {
-				// Save ObatPasiens
-				ObatPasien::model()->deleteAllByAttributes(array('pendaftaran_id' => $model->id));
-				if (isset($_POST['Pendaftaran']['obatPasiens'])) {
-					foreach ($_POST['Pendaftaran']['obatPasiens'] as $obatId) {
-						$obatPasien = new ObatPasien();
-						$obatPasien->pendaftaran_id = $model->id;
-						$obatPasien->obat_id = $obatId;
-						$obatPasien->save();
-					}
-				}
-
-				// Save TindakanPasiens
-				TindakanPasien::model()->deleteAllByAttributes(array('pendaftaran_id' => $model->id));
-				if (isset($_POST['Pendaftaran']['tindakanPasiens'])) {
-					foreach ($_POST['Pendaftaran']['tindakanPasiens'] as $tindakanId) {
-						$tindakanPasien = new TindakanPasien();
-						$tindakanPasien->pendaftaran_id = $model->id;
-						$tindakanPasien->tindakan_id = $tindakanId;
-						$tindakanPasien->save();
-					}
-				}
-
-				$this->redirect(array('view', 'id' => $model->id));
-			}
+			$model->attributes=$_POST['Tagihan'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
@@ -178,12 +153,7 @@ class PendaftaranController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Pendaftaran',array(
-			'criteria'=>array(
-				'order'=>'tanggal DESC',
-				'with'=>array('pasien'),
-			)));
-		
+		$dataProvider=new CActiveDataProvider('Tagihan');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -194,10 +164,10 @@ class PendaftaranController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Pendaftaran('search');
+		$model=new Tagihan('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Pendaftaran']))
-			$model->attributes=$_GET['Pendaftaran'];
+		if(isset($_GET['Tagihan']))
+			$model->attributes=$_GET['Tagihan'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -208,13 +178,12 @@ class PendaftaranController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Pendaftaran the loaded model
+	 * @return Tagihan the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Pendaftaran::model()->with(array('obatPasiens.obat', 'tindakanPasiens.tindakan', 'pembayarans', 'pasien', 'user', 'tagihans'))->findByPk($id);		
-		
+		$model=Tagihan::model()->with()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -222,11 +191,11 @@ class PendaftaranController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Pendaftaran $model the model to be validated
+	 * @param Tagihan $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='pendaftaran-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tagihan-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

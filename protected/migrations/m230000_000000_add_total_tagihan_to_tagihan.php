@@ -11,9 +11,5 @@ class m230000_000000_add_total_tagihan_to_tagihan extends CDbMigration
     public function down()
     {
         $this->dropColumn('tagihan', 'rincian_tagihan');
-
-    public function down()
-    {
-        $this->dropColumn('tagihan', 'total_tagihan');
     }
 }

@@ -68,6 +68,19 @@ class Pendaftaran extends CActiveRecord
 	}
 
 	/**
+	 * Get pendaftaranList for dropDownList
+	 */
+	public function getPendaftaranList()
+	{
+		$models = $this->findAll();
+		// show pasien nama and tanggal pendaftaran
+		$list = CHtml::listData($models, 'id', function($model) {
+			return $model->pasien->nama . ' - ' . $model->tanggal;
+		});
+		return $list;
+	}
+
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -105,6 +118,8 @@ class Pendaftaran extends CActiveRecord
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'tagihans' => array(self::HAS_MANY, 'Tagihan', 'pendaftaran_id'),
 			'tindakanPasiens' => array(self::HAS_MANY, 'TindakanPasien', 'pendaftaran_id'),
+			'obat' => array(self::HAS_MANY, 'Obat', array('obat_id'=>'id'), 'through'=>'obatPasiens'),
+			'tindakan' => array(self::HAS_MANY, 'Tindakan', array('tindakan_id'=>'id'), 'through'=>'tindakanPasiens')
 		);
 	}
 	// /**
@@ -121,7 +136,7 @@ class Pendaftaran extends CActiveRecord
     {
         parent::beforeFind();
         $this->getDbCriteria()->mergeWith(array(
-            'with' => array('obatPasiens.obat','tindakanPasiens.tindakan'), // Always eager load comments
+            'with' => array('obat', 'tindakan'), // Always eager load comments
         ));
 		
         return true;

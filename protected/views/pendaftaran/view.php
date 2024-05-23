@@ -16,7 +16,8 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Pendaftaran #<?php echo $model->id; ?></h1>
+<h1>View Pendaftaran #<?php echo $model->id; ?> | 
+<?php echo $model->pasien->nama; ?></h1>
 
 
 
@@ -24,26 +25,23 @@ $this->menu=array(
 // Display Pendaftaran details
 echo CHtml::encode($model->tanggal);
 
-// Manually load all obatPasiens and tindakanPasiens
-$model->obatPasiens = $model->obatPasiens;
-$model->tindakanPasiens = $model->tindakanPasiens;
-
-if (!empty($model->obatPasiens)) {
-    echo "<h3>Obat Pasiens</h3>";
-    foreach ($model->obatPasiens as $obatPasien) {
-        echo CHtml::encode($obatPasien->obat->nama) . " - " . CHtml::encode($obatPasien->obat->harga);
-    }
-} else {
-    echo "<p>No obat pasien found.</p>";
-}
-
-// Display related TindakanPasiens
-if (!empty($model->tindakanPasiens)) {
-    echo "<h3>Tindakan Pasiens</h3>";
-    foreach ($model->tindakanPasiens as $tindakanPasien) {
-        echo CHtml::encode($tindakanPasien->tindakan->nama) . " - " . CHtml::encode($tindakanPasien->tindakan->harga);
-    }
-} else {
-    echo "<p>No tindakan pasien found.</p>";
-}
+// list all $model->obat
 ?>
+
+<h3>Obat:</h3>
+<ul>
+    <?php foreach ($model->obat as $obatPasien): ?>
+        <li><?php echo CHtml::encode($obatPasien->nama); // Change `name` to whatever attribute you want to show ?>
+		| <?php echo CHtml::encode($obatPasien->harga); ?>
+		</li>
+    <?php endforeach; ?>
+</ul>
+
+<h3>Tindakan:</h3>
+<ul>
+    <?php foreach ($model->tindakan as $tindakanPasien): ?>
+        <li><?php echo CHtml::encode($tindakanPasien->nama); // Change `name` to whatever attribute you want to show ?>
+		| <?php echo CHtml::encode($tindakanPasien->harga); ?>
+		</li>
+    <?php endforeach; ?>
+</ul>
