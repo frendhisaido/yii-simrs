@@ -96,7 +96,6 @@ class PendaftaranController extends Controller
 
 				$this->redirect(array('view', 'id' => $model->id));
 			}
-				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -119,8 +118,31 @@ class PendaftaranController extends Controller
 		if(isset($_POST['Pendaftaran']))
 		{
 			$model->attributes=$_POST['Pendaftaran'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()) {
+				// Save ObatPasiens
+				ObatPasien::model()->deleteAllByAttributes(array('pendaftaran_id' => $model->id));
+				if (isset($_POST['Pendaftaran']['obatPasiens'])) {
+					foreach ($_POST['Pendaftaran']['obatPasiens'] as $obatId) {
+						$obatPasien = new ObatPasien();
+						$obatPasien->pendaftaran_id = $model->id;
+						$obatPasien->obat_id = $obatId;
+						$obatPasien->save();
+					}
+				}
+
+				// Save TindakanPasiens
+				TindakanPasien::model()->deleteAllByAttributes(array('pendaftaran_id' => $model->id));
+				if (isset($_POST['Pendaftaran']['tindakanPasiens'])) {
+					foreach ($_POST['Pendaftaran']['tindakanPasiens'] as $tindakanId) {
+						$tindakanPasien = new TindakanPasien();
+						$tindakanPasien->pendaftaran_id = $model->id;
+						$tindakanPasien->tindakan_id = $tindakanId;
+						$tindakanPasien->save();
+					}
+				}
+
+				$this->redirect(array('view', 'id' => $model->id));
+			}
 		}
 
 		$this->render('update',array(
