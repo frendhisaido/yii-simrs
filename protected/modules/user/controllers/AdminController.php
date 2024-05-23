@@ -127,6 +127,7 @@ class AdminController extends Controller
 					$profile->user_id = $model->id;
 					$profile->save();
 				}
+				$model->wilayah = $_POST['User']['wilayah'];
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
 			} else $profile->validate();
