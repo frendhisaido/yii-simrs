@@ -35,8 +35,8 @@ class Pendaftaran extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('pegawai_id, pasien_id, tanggal', 'required'),
-			array('pegawai_id, pasien_id', 'numerical', 'integerOnly'=>true),
+			array('user_id, pasien_id, tanggal', 'required'),
+			array('user_id, pasien_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, pegawai_id, pasien_id, tanggal', 'safe', 'on'=>'search'),
@@ -67,7 +67,7 @@ class Pendaftaran extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'pegawai_id' => 'Pegawai',
+			'user_id' => 'User',
 			'pasien_id' => 'Pasien',
 			'tanggal' => 'Tanggal',
 		);
@@ -92,7 +92,7 @@ class Pendaftaran extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('pegawai_id',$this->pegawai_id);
+		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('pasien_id',$this->pasien_id);
 		$criteria->compare('tanggal',$this->tanggal,true);
 
