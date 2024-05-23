@@ -10,7 +10,10 @@ class m240523_093425_create_pasien_table extends CDbMigration
 			'usia' => 'integer NOT NULL',
 			'jenis_kelamin' => 'string NOT NULL',
 			'wilayah_id' => 'integer NOT NULL',
+			'created_by' => 'integer NOT NULL',
 		));
+
+		$this->addForeignKey('fk_tagihan_created_by_user', 'tagihan', 'created_by', 'user', 'id', 'CASCADE', 'RESTRICT');
 
 		$this->addForeignKey('fk_pasien_wilayah', 'pasien', 'wilayah_id', 'wilayah', 'id', 'CASCADE', 'RESTRICT');
 
@@ -41,6 +44,10 @@ class m240523_093425_create_pasien_table extends CDbMigration
 
 		$this->addForeignKey('fk_tagihan_user', 'tagihan', 'user_id', 'user', 'id', 'CASCADE', 'RESTRICT');
 	}
+
+	public function down()
+	{
+		$this->dropForeignKey('fk_tagihan_created_by_user', 'tagihan');
 
 	public function down()
 	{
