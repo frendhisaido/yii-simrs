@@ -20,6 +20,17 @@
 class Pendaftaran extends CActiveRecord
 {
 	/**
+	 * Load model method to always load relations
+	 */
+	public function loadModel($id)
+	{
+		$model = $this->findByPk($id, array('with' => array('obatPasiens', 'pembayarans', 'pasien', 'user', 'tagihans', 'tindakanPasiens')));
+		if ($model === null)
+			throw new CHttpException(404, 'The requested page does not exist.');
+		return $model;
+	}
+
+	/**
 	 * Override find method to always load relations
 	 */
 	public function find($condition = '', $params = array())
