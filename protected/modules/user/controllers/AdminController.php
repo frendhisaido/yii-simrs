@@ -108,6 +108,8 @@ class AdminController extends Controller
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
+		var_dump($profile);die;
+
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
 		{
