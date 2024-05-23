@@ -12,6 +12,17 @@
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'wilayah'); ?>
+		<?php
+		// Include the Wilayah class file
+		Yii::import('Wilayah.models.Wilayah');
+
+		echo $form->dropDownList($model,'wilayah',Wilayah::model()->getWilayahList());
+		?>
+		<?php echo $form->error($model,'wilayah'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'username'); ?>
