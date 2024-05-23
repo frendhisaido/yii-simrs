@@ -53,10 +53,22 @@ array_push($attributes,
 	)
 );
 
-// Add wilayah attribute if not null
-if (!empty($model->wilayah)) {
-	array_push($attributes, 'wilayah');
-}
+array_push($attributes,
+	'password',
+	'email',
+	'activkey',
+	'create_at',
+	'lastvisit_at',
+	array(
+		'name' => 'superuser',
+		'value' => User::itemAlias("AdminStatus", $model->superuser),
+	),
+	array(
+		'name' => 'status',
+		'value' => User::itemAlias("UserStatus", $model->status),
+	),
+	'wilayah' // Add wilayah attribute
+);
 
 $this->widget('zii.widgets.CDetailView', array(
 	'data' => $model,
