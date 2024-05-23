@@ -34,22 +34,12 @@ $this->menu=array(
 		array(
 			'name' => 'Obat',
 			'type' => 'raw',
-			'value' => function($data) {
-				$obatNames = array_map(function($obatPasien) {
-					return $obatPasien->obat->nama;
-				}, $data->obatPasiens);
-				return implode(', ', $obatNames);
-			},
+			'value' => CHtml::encode(implode(', ', CHtml::listData($model->obatPasiens, 'obat_id', 'obat.nama'))),
 		),
 		array(
 			'name' => 'Tindakan',
 			'type' => 'raw',
-			'value' => function($data) {
-				$tindakanNames = array_map(function($tindakanPasien) {
-					return $tindakanPasien->tindakan->nama;
-				}, $data->tindakanPasiens);
-				return implode(', ', $tindakanNames);
-			},
+			'value' => CHtml::encode(implode(', ', CHtml::listData($model->tindakanPasiens, 'tindakan_id', 'tindakan.nama'))),
 		),
 		'tanggal',
 	),
