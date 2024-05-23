@@ -109,7 +109,6 @@ class AdminController extends Controller
 	{
 		$model=$this->loadModel();
 		$profile=$model->profile;
-		var_dump($profile);die;
 
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
@@ -128,6 +127,7 @@ class AdminController extends Controller
 					$profile->save();
 				}
 				$model->wilayah = $_POST['User']['wilayah'];
+				// var_dump($model->wilayah);die;
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
 			} else $profile->validate();
