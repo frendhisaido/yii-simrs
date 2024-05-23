@@ -20,6 +20,26 @@
 class Pendaftaran extends CActiveRecord
 {
 	/**
+	 * Override find method to always load relations
+	 */
+	public function find($condition = '', $params = array())
+	{
+		$criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
+		$criteria->with = array('obatPasiens', 'pembayarans', 'pasien', 'user', 'tagihans', 'tindakanPasiens');
+		return parent::find($criteria);
+	}
+
+	/**
+	 * Override findAll method to always load relations
+	 */
+	public function findAll($condition = '', $params = array())
+	{
+		$criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
+		$criteria->with = array('obatPasiens', 'pembayarans', 'pasien', 'user', 'tagihans', 'tindakanPasiens');
+		return parent::findAll($criteria);
+	}
+
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
