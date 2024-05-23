@@ -18,29 +18,32 @@ $this->menu=array(
 
 <h1>View Pendaftaran #<?php echo $model->id; ?></h1>
 
-<?php 
-	$this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		array(
-			'name'=>'user_id',
-			'value'=>$model->user->username,
-		),
-		array(
-			'name'=>'pasien_id',
-			'value'=>$model->pasien->nama
-		),
-		array(
-			'name' => 'Obat',
-			'type' => 'raw',
-			'value' => CHtml::encode(implode(', ', CHtml::listData($model->obatPasiens, 'obat_id', 'obat.nama'))),
-		),
-		array(
-			'name' => 'Tindakan',
-			'type' => 'raw',
-			'value' => CHtml::encode(implode(', ', CHtml::listData($model->tindakanPasiens, 'tindakan_id', 'tindakan.nama'))),
-		),
-		'tanggal',
-	),
-)); ?>
+
+
+<?php
+// Display Pendaftaran details
+echo CHtml::encode($model->tanggal);
+
+// Manually load all obatPasiens and tindakanPasiens
+$model->obatPasiens = $model->obatPasiens;
+$model->tindakanPasiens = $model->tindakanPasiens;
+
+if (!empty($model->obatPasiens)) {
+    echo "<h3>Obat Pasiens</h3>";
+    foreach ($model->obatPasiens as $obatPasien) {
+        echo CHtml::encode($obatPasien->obat->nama) . " - " . CHtml::encode($obatPasien->obat->harga);
+    }
+} else {
+    echo "<p>No obat pasien found.</p>";
+}
+
+// Display related TindakanPasiens
+if (!empty($model->tindakanPasiens)) {
+    echo "<h3>Tindakan Pasiens</h3>";
+    foreach ($model->tindakanPasiens as $tindakanPasien) {
+        echo CHtml::encode($tindakanPasien->tindakan->nama) . " - " . CHtml::encode($tindakanPasien->tindakan->harga);
+    }
+} else {
+    echo "<p>No tindakan pasien found.</p>";
+}
+?>

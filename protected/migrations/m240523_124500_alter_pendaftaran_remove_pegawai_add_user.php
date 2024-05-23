@@ -14,7 +14,7 @@ class m240523_124500_alter_pendaftaran_remove_pegawai_add_user extends CDbMigrat
         $this->addColumn('pendaftaran', 'user_id', 'int NOT NULL');
 
         // Add foreign key for user_id
-        $this->addForeignKey('fk_pendaftaran_user', 'pendaftaran', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_pendaftaran_user', 'pendaftaran', 'user_id', 'users', 'id', 'CASCADE', 'CASCADE');
 
         // Drop pegawai table
         $this->dropTable('pegawai');

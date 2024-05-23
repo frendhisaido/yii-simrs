@@ -11,6 +11,8 @@ return array(
 	'connectionString' => 'mysql:Driver={MySQL};Server=127.0.0.1;dbname=klinik',
 	'username' => 'root',
 	'password' => '',
+	'enableProfiling' => true,
+    'enableParamLogging' => true,
 	// uncomment the following lines to use a MySQL database
 	/*
 	'connectionString' => 'mysql:host=localhost;dbname=testdrive',
