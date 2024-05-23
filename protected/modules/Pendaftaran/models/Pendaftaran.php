@@ -85,27 +85,18 @@ class Pendaftaran extends CActiveRecord
 			array('user_id, pasien_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, pegawai_id, pasien_id, tanggal', 'safe', 'on'=>'search'),
-			'obatPasiens' => array(self::HAS_MANY, 'ObatPasien', 'pendaftaran_id'),
-			'tindakanPasiens' => array(self::HAS_MANY, 'TindakanPasien', 'pendaftaran_id'),
+			array('id, pegawai_id, pasien_id, tanggal, obatPasiens, tindakanPasiens', 'safe', 'on'=>'search'),
 		);
 	}
 
 	/**
-	 * @return array relational rules.
+	 * After finding the model, populate the obatPasiens and tindakanPasiens arrays.
 	 */
-	public function relations()
+	protected function afterFind()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'obatPasiens' => array(self::HAS_MANY, 'ObatPasien', 'pendaftaran_id'),
-			'pembayarans' => array(self::HAS_MANY, 'Pembayaran', 'pendaftaran_id'),
-			'pasien' => array(self::BELONGS_TO, 'Pasien', 'pasien_id'),
-			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-			'tagihans' => array(self::HAS_MANY, 'Tagihan', 'pendaftaran_id'),
-			'tindakanPasiens' => array(self::HAS_MANY, 'TindakanPasien', 'pendaftaran_id'),
-		);
+		parent::afterFind();
+		$this->obatPasiens = CHtml::listData($this->obatPasiens, 'id', 'obat_id');
+		$this->tindakanPasiens = CHtml::listData($this->tindakanPasiens, 'id', 'tindakan_id');
 	}
 
 	/**
