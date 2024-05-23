@@ -41,6 +41,24 @@
 		<?php echo $form->error($model,'tanggal'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model, 'obatPasiens'); ?>
+		<?php
+		Yii::import('Obat.models.Obat');
+		echo $form->checkBoxList($model, 'obatPasiens', CHtml::listData(Obat::model()->findAll(), 'id', 'nama'));
+		?>
+		<?php echo $form->error($model, 'obatPasiens'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model, 'tindakanPasiens'); ?>
+		<?php
+		Yii::import('Tindakan.models.Tindakan');
+		echo $form->checkBoxList($model, 'tindakanPasiens', CHtml::listData(Tindakan::model()->findAll(), 'id', 'nama'));
+		?>
+		<?php echo $form->error($model, 'tindakanPasiens'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

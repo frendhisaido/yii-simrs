@@ -25,6 +25,16 @@ Yii::import('Pendaftaran.models.TindakanPasien');
 class Pendaftaran extends CActiveRecord
 {
 	/**
+	 * @var array to hold selected ObatPasiens
+	 */
+	public $obatPasiens = array();
+
+	/**
+	 * @var array to hold selected TindakanPasiens
+	 */
+	public $tindakanPasiens = array();
+
+	/**
 	 * Load model method to always load relations
 	 */
 	public function loadModel($id)
@@ -76,6 +86,8 @@ class Pendaftaran extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, pegawai_id, pasien_id, tanggal', 'safe', 'on'=>'search'),
+			'obatPasiens' => array(self::HAS_MANY, 'ObatPasien', 'pendaftaran_id'),
+			'tindakanPasiens' => array(self::HAS_MANY, 'TindakanPasien', 'pendaftaran_id'),
 		);
 	}
 
@@ -130,7 +142,9 @@ class Pendaftaran extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('user.username',$this->user_id,true);
 		$criteria->compare('pasien.nama',$this->pasien_id,true);
-		$criteria->compare('tanggal',$this->tanggal,true);
+		$criteria->compare('tanggal', $this->tanggal, true);
+
+		$criteria->with = array('obatPasiens', 'tindakanPasiens');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
