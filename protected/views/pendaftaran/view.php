@@ -31,17 +31,25 @@ $this->menu=array(
 			'name'=>'pasien_id',
 			'value'=>$model->pasien->nama
 		),
-		// Show obatPasiens if there are any
 		array(
-			'name'=>'obat',
-			//obatPasiens is an array of ObatPasien objects
-			'value'=>implode(', ', CHtml::listData($model->obatPasiens, 'id', 'obat.nama')),
+			'name' => 'Obat',
+			'type' => 'raw',
+			'value' => function($data) {
+				$obatNames = array_map(function($obatPasien) {
+					return $obatPasien->obat->nama;
+				}, $data->obatPasiens);
+				return implode(', ', $obatNames);
+			},
 		),
-		// Show tindakanPasiens if there are any
 		array(
-			'name'=>'tindakan',
-			//tindakanPasiens is an array of TindakanPasien objects
-			'value'=>implode(', ', CHtml::listData($model->tindakanPasiens, 'id', 'tindakan.nama')),
+			'name' => 'Tindakan',
+			'type' => 'raw',
+			'value' => function($data) {
+				$tindakanNames = array_map(function($tindakanPasien) {
+					return $tindakanPasien->tindakan->nama;
+				}, $data->tindakanPasiens);
+				return implode(', ', $tindakanNames);
+			},
 		),
 		'tanggal',
 	),
