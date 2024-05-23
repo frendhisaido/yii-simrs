@@ -123,10 +123,12 @@ class AdminController extends Controller
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
 				}
 				if($model->save()) {
-					$model->wilayah = $_POST['User']['wilayah'];
+					$model->wilayah_id = $_POST['User']['wilayah'];
 					$profile->user_id = $model->id;
+					$model->save();
 					$profile->save();
 				}
+				
 				$this->redirect(array('view','id'=>$model->id));
 			} else $profile->validate();
 		}
