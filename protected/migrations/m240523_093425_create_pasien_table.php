@@ -14,7 +14,7 @@ class m240523_093425_create_pasien_table extends CDbMigration
 
 		$this->addForeignKey('fk_pasien_wilayah', 'pasien', 'wilayah_id', 'wilayah', 'id', 'CASCADE', 'RESTRICT');
 
-		$this->createTable('pasien_tindakan', array(
+		$this->createTable('tagihan_tindakan', array(
 			'pasien_id' => 'integer NOT NULL',
 			'tindakan_id' => 'integer NOT NULL',
 			'PRIMARY KEY(pasien_id, tindakan_id)',
@@ -23,7 +23,7 @@ class m240523_093425_create_pasien_table extends CDbMigration
 		$this->addForeignKey('fk_pasien_tindakan_pasien', 'pasien_tindakan', 'pasien_id', 'pasien', 'id', 'CASCADE', 'RESTRICT');
 		$this->addForeignKey('fk_pasien_tindakan_tindakan', 'pasien_tindakan', 'tindakan_id', 'tindakan', 'id', 'CASCADE', 'RESTRICT');
 
-		$this->createTable('pasien_obat', array(
+		$this->createTable('tagihan_obat', array(
 			'pasien_id' => 'integer NOT NULL',
 			'obat_id' => 'integer NOT NULL',
 			'PRIMARY KEY(pasien_id, obat_id)',
@@ -32,14 +32,14 @@ class m240523_093425_create_pasien_table extends CDbMigration
 		$this->addForeignKey('fk_pasien_obat_pasien', 'pasien_obat', 'pasien_id', 'pasien', 'id', 'CASCADE', 'RESTRICT');
 		$this->addForeignKey('fk_pasien_obat_obat', 'pasien_obat', 'obat_id', 'obat', 'id', 'CASCADE', 'RESTRICT');
 
-		$this->createTable('pasien_tagihan', array(
-			'pasien_id' => 'integer NOT NULL',
-			'tagihan_id' => 'integer NOT NULL',
-			'PRIMARY KEY(pasien_id, tagihan_id)',
+		$this->createTable('tagihan', array(
+			'id' => 'pk',
+			'user_id' => 'integer NOT NULL',
+			'total' => 'decimal(10,2) NOT NULL',
+			'created_at' => 'datetime NOT NULL',
 		));
 
-		$this->addForeignKey('fk_pasien_tagihan_pasien', 'pasien_tagihan', 'pasien_id', 'pasien', 'id', 'CASCADE', 'RESTRICT');
-		$this->addForeignKey('fk_pasien_tagihan_tagihan', 'pasien_tagihan', 'tagihan_id', 'tagihan', 'id', 'CASCADE', 'RESTRICT');
+		$this->addForeignKey('fk_tagihan_user', 'tagihan', 'user_id', 'user', 'id', 'CASCADE', 'RESTRICT');
 	}
 
 	public function down()
@@ -55,9 +55,8 @@ class m240523_093425_create_pasien_table extends CDbMigration
 		$this->dropForeignKey('fk_pasien_obat_obat', 'pasien_obat');
 		$this->dropTable('pasien_obat');
 
-		$this->dropForeignKey('fk_pasien_tagihan_pasien', 'pasien_tagihan');
-		$this->dropForeignKey('fk_pasien_tagihan_tagihan', 'pasien_tagihan');
-		$this->dropTable('pasien_tagihan');
+		$this->dropForeignKey('fk_tagihan_user', 'tagihan');
+		$this->dropTable('tagihan');
 	}
 
 	/*
