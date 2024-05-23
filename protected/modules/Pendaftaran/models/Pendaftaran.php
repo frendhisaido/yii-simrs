@@ -1,5 +1,10 @@
 <?php
 
+Yii::import('Obat.models.ObatPasien');
+Yii::import('Pendaftaran.models.Pembayaran');
+Yii::import('Pendaftaran.models.Tagihan');
+Yii::import('Pendaftaran.models.TindakanPasien');
+
 /**
  * This is the model class for table "pendaftaran".
  *
@@ -123,8 +128,8 @@ class Pendaftaran extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('pasien_id',$this->pasien_id);
+		$criteria->compare('user.username',$this->user_id,true);
+		$criteria->compare('pasien.nama',$this->pasien_id,true);
 		$criteria->compare('tanggal',$this->tanggal,true);
 
 		return new CActiveDataProvider($this, array(
