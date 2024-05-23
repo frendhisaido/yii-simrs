@@ -85,9 +85,9 @@ class AdminController extends Controller
 			$profile->attributes=$_POST['Profile'];
 			$profile->user_id=0;
 			if($model->validate() && $profile->validate()) {
-				$model->wilayah = $_POST['User']['wilayah'];
 				$model->password=Yii::app()->controller->module->encrypting($model->password);
 				if($model->save()) {
+					$model->wilayah = $_POST['User']['wilayah'];
 					$profile->user_id=$model->id;
 					$profile->save();
 				}
@@ -123,12 +123,10 @@ class AdminController extends Controller
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
 				}
 				if($model->save()) {
+					$model->wilayah = $_POST['User']['wilayah'];
 					$profile->user_id = $model->id;
 					$profile->save();
 				}
-				$model->wilayah = $_POST['User']['wilayah'];
-				// var_dump($model->wilayah);die;
-				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
 			} else $profile->validate();
 		}
