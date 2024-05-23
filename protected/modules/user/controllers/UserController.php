@@ -35,67 +35,48 @@ class UserController extends Controller
 	}	
 
 	/**
-	 * Displays a particular model.
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionView()
+	public function actionUpdate($id)
 	{
-		$model = $this->loadModel();
-		$this->render('view',array(
+		$model=$this->loadModel($id);
+		$profile=$model->profile;
+
+		if(isset($_POST['User']))
+		{
+			$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			if($model->save() && $profile->save())
+				$this->redirect(array('view','id'=>$model->id));
+		}
+
+		$this->render('update',array(
 			'model'=>$model,
+			'profile'=>$profile,
 		));
 	}
 
 	/**
-	 * Lists all models.
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionIndex()
+	public function actionCreate()
 	{
-		$dataProvider=new CActiveDataProvider('User', array(
-			'criteria'=>array(
-		        'condition'=>'status>'.User::STATUS_BANNED,
-		    ),
-				
-			'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->user_page_size,
-			),
-		));
+		$model=new User;
+		$profile=new Profile;
 
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
-
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 */
-	public function loadModel()
-	{
-		if($this->_model===null)
+		if(isset($_POST['User']))
 		{
-			if(isset($_GET['id']))
-				$this->_model=User::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
+			$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			if($model->save() && $profile->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
-		return $this->_model;
-	}
 
-
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
-	 */
-	public function loadUser($id=null)
-	{
-		if($this->_model===null)
-		{
-			if($id!==null || isset($_GET['id']))
-				$this->_model=User::model()->findbyPk($id!==null ? $id : $_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
+		$this->render('create',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 	}
 }
