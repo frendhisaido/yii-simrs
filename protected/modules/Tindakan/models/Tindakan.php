@@ -1,34 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "wilayah".
+ * This is the model class for table "tindakan".
  *
- * The followings are the available columns in table 'wilayah':
+ * The followings are the available columns in table 'tindakan':
  * @property integer $id
  * @property string $nama
+ * @property integer $harga
  *
  * The followings are the available model relations:
- * @property Pegawai[] $pegawais
+ * @property TindakanPasien[] $tindakanPasiens
  */
-class Wilayah extends CActiveRecord
+class Tindakan extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'wilayah';
+		return 'tindakan';
 	}
-	
-	/**
-	 * Get list of wilayah
-	 */
-	public function getWilayahList()
-	{
-		$wilayah = Wilayah::model()->findAll();
-		$list = CHtml::listData($wilayah, 'id', 'nama');
-		return $list;
-	}
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -37,11 +29,12 @@ class Wilayah extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nama', 'required'),
+			array('nama, harga', 'required'),
+			array('harga', 'numerical', 'integerOnly'=>true),
 			array('nama', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nama', 'safe', 'on'=>'search'),
+			array('id, nama, harga', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,9 +43,10 @@ class Wilayah extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// A wilayah may have many pegawai which represented by a user model
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
 		return array(
-			'pegawais' => array(self::HAS_MANY, 'User', 'wilayah_id'),
+			'tindakanPasiens' => array(self::HAS_MANY, 'TindakanPasien', 'tindakan_id'),
 		);
 	}
 
@@ -64,6 +58,7 @@ class Wilayah extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nama' => 'Nama',
+			'harga' => 'Harga',
 		);
 	}
 
@@ -87,6 +82,7 @@ class Wilayah extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nama',$this->nama,true);
+		$criteria->compare('harga',$this->harga);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -97,7 +93,7 @@ class Wilayah extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Wilayah the static model class
+	 * @return Tindakan the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

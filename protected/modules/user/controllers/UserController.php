@@ -1,5 +1,7 @@
 <?php
 
+Yii::import('system.collections.CMap');
+Yii::import('system.web.CActiveRecord');
 class UserController extends Controller
 {
 	/**

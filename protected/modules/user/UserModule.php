@@ -8,6 +8,7 @@
  * @version $Id: UserModule.php 132 2011-10-30 10:45:01Z mishamx $
  */
 
+ Yii::import('Wilayah.models.Wilayah');
 class UserModule extends CWebModule
 {
 	/**
@@ -97,7 +98,7 @@ class UserModule extends CWebModule
 	public $tableProfileFields = 'profiles_fields';
 
     public $defaultScope = array(
-            'with'=>array('profile'),
+            'with'=>array('profile', 'wilayah'),
     );
 	
 	static private $_user;

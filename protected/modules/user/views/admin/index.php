@@ -33,7 +33,7 @@ $('.search-form form').submit(function(){
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
     'model'=>$model,
-)); ?>
+));?>
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -55,6 +55,12 @@ $('.search-form form').submit(function(){
 			'name'=>'email',
 			'type'=>'raw',
 			'value'=>'CHtml::link(UHtml::markSearch($data,"email"), "mailto:".$data->email)',
+		),
+		// Wilayah echo 
+		array(
+			'name'=>'wilayah',
+			'type'=>'raw',
+			'value'=>'CHtml::encode($data->wilayah ? $data->wilayah->nama : "")',
 		),
 		'create_at',
 		'lastvisit_at',

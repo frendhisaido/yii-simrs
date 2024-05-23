@@ -30,6 +30,10 @@ return array(
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
 		'Wilayah',
+		'Obat',
+		'Tindakan',
+		'Pasien',
+		'Pendaftaran',
 		'user'=>array(
 			# encrypting method (php hash function)
 			'hash' => 'md5',
