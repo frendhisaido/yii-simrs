@@ -4,17 +4,22 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
-<h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
-
-<p>Congratulations! You have successfully created your Yii application.</p>
-
-<p>You may change the content of this page by modifying the following two files:</p>
-<ul>
-	<li>View file: <code><?php echo __FILE__; ?></code></li>
-	<li>Layout file: <code><?php echo $this->getLayoutFile('main'); ?></code></li>
-</ul>
-
-<p>For more details on how to further develop this application, please read
-the <a href="https://www.yiiframework.com/doc/">documentation</a>.
-Feel free to ask in the <a href="https://www.yiiframework.com/forum/">forum</a>,
-should you have any questions.</p>
+<?php 
+        $this->widget(
+            'chartjs.widgets.ChBars', 
+            array(
+                'width' => 600,
+                'height' => 300,
+                'htmlOptions' => array(),
+                'labels' => array("January","February","March","April","May","June"),
+                'datasets' => array(
+                    array(
+                        "fillColor" => "#ff00ff",
+                        "strokeColor" => "rgba(220,220,220,1)",
+                        "data" => array(10, 20, 30, 40, 50, 60)
+                    )       
+                ),
+                'options' => array()
+            )
+        ); 
+    ?>
