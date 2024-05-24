@@ -37,6 +37,7 @@ array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>Yii::app()->getM
 				array('label'=>'Home', 'url'=>array('/site/index')),
 				array('label'=>'Pasien', 'url'=>array('/pasien/index')),
 				array('label'=>'Pendaftaran', 'url'=>array('/pendaftaran/index')),
+				array('label'=>'Tagihan', 'url'=>array('/tagihan/index')),
 				// Masters
 				array('label'=>'Master', 'url'=>'#', 'items'=>array(
 					array('label'=>'Wilayah', 'url'=>array('/Wilayah/wilayahController/index')),

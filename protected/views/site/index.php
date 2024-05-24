@@ -4,6 +4,7 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
+<h2>Total tagihan chart: </h2>
 <?php
 $labels = array_keys($chartData);
 $data = array_values($chartData);
@@ -11,7 +12,7 @@ $data = array_values($chartData);
 $this->widget(
     'chartjs.widgets.ChBars',
     array(
-        'width' => 600,
+        'width' => 800,
         'height' => 300,
         'htmlOptions' => array(),
         'labels' => $labels,

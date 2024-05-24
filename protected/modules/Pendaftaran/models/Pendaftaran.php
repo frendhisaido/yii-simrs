@@ -116,7 +116,7 @@ class Pendaftaran extends CActiveRecord
 			'pembayarans' => array(self::HAS_MANY, 'Pembayaran', 'pendaftaran_id'),
 			'pasien' => array(self::BELONGS_TO, 'Pasien', 'pasien_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-			'tagihans' => array(self::HAS_MANY, 'Tagihan', 'pendaftaran_id'),
+			'tagihan' => array(self::HAS_ONE, 'Tagihan', 'pendaftaran_id'),
 			'tindakanPasiens' => array(self::HAS_MANY, 'TindakanPasien', 'pendaftaran_id'),
 			'obat' => array(self::HAS_MANY, 'Obat', array('obat_id'=>'id'), 'through'=>'obatPasiens'),
 			'tindakan' => array(self::HAS_MANY, 'Tindakan', array('tindakan_id'=>'id'), 'through'=>'tindakanPasiens')

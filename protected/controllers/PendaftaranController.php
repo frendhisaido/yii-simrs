@@ -54,7 +54,7 @@ class PendaftaranController extends Controller
 	 public function actionView($id)
 	 {
 		 $model = Pendaftaran::model()->with(  array(
-			'obat','tindakan'
+			'obat','tindakan','tagihan'
 		))->findByPk($id);
 		 
 		 if ($model === null) {

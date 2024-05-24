@@ -45,3 +45,10 @@ echo CHtml::encode($model->tanggal);
 		</li>
     <?php endforeach; ?>
 </ul>
+
+<?php if ($model->tagihan !== null): ?>
+	<h3>Tagihan:</h3>
+	<ul>
+		<li><?php echo CHtml::link('View Tagihan', array('tagihan/view', 'id' => $model->tagihan->id)); ?></li>
+	</ul>
+<?php endif; ?>

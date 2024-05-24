@@ -37,11 +37,11 @@ class SiteController extends Controller
 		// Summarize data for chart
 		$chartData = [];
 		foreach ($pendaftaranData as $data) {
-			$month = date('F', strtotime($data['tanggal']));
-			if (!isset($chartData[$month])) {
-				$chartData[$month] = 0;
+			$date = date('d MM', strtotime($data['tanggal']));
+			if (!isset($chartData[$date])) {
+				$chartData[$date] = 0;
 			}
-			$chartData[$month] += $data['total_tagihan'];
+			$chartData[$date] += $data['total_tagihan'];
 		}
 
 		// Pass data to the view
