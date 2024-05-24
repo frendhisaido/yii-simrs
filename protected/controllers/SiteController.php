@@ -27,9 +27,25 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		// Fetch pendaftaran data along with tagihan
+		$pendaftaranData = Yii::app()->db->createCommand()
+			->select('p.id, p.tanggal, t.total_tagihan')
+			->from('pendaftaran p')
+			->join('tagihan t', 'p.id = t.pendaftaran_id')
+			->queryAll();
+
+		// Summarize data for chart
+		$chartData = [];
+		foreach ($pendaftaranData as $data) {
+			$month = date('F', strtotime($data['tanggal']));
+			if (!isset($chartData[$month])) {
+				$chartData[$month] = 0;
+			}
+			$chartData[$month] += $data['total_tagihan'];
+		}
+
+		// Pass data to the view
+		$this->render('index', ['chartData' => $chartData]);
 	}
 
 	/**
